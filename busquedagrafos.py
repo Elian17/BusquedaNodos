@@ -33,6 +33,18 @@ class Nodo:
                     return x
         return 0
 
+    # BUSQUEDA POR PROFUNDIDAD RETORNA CAMINO
+    def BuscarNodoDFSR(self, nodo, busqueda):
+        print(nodo.valor)
+        if nodo.valor==busqueda:
+            return nodo.valor
+        else:
+            for n in nodo.nodos:
+                x =  n.BuscarNodoDFSR(n, busqueda)
+                if x!=0:
+                    return str(x)+"-"+str(nodo.valor)
+        return 0
+
     # BUSQUEDA POR AMPLITUD
     def BuscarNodoBFS(self, nodo, busqueda, cola):
         print(nodo.valor)
@@ -51,21 +63,22 @@ class Nodo:
 
 
 grafo = Nodo(1)
+grafo.NuevoNodo(Nodo(8))
 grafo.NuevoNodo(Nodo(2))
 grafo.NuevoNodo(Nodo(3))
-grafo.NuevoNodoBusqueda(grafo, Nodo(4), 3)
+grafo.NuevoNodoBusqueda(grafo, Nodo(4), 8)
+grafo.NuevoNodoBusqueda(grafo, Nodo(5), 8)
+grafo.NuevoNodoBusqueda(grafo, Nodo(6), 2)
+grafo.NuevoNodoBusqueda(grafo, Nodo(8), 6)
+grafo.NuevoNodoBusqueda(grafo, Nodo(7), 6)
 grafo.NuevoNodoBusqueda(grafo, Nodo(8), 3)
-grafo.NuevoNodoBusqueda(grafo, Nodo(5), 4)
-grafo.NuevoNodoBusqueda(grafo, Nodo(6), 4)
-grafo.NuevoNodoBusqueda(grafo, Nodo(7), 1)
-grafo.NuevoNodoBusqueda(grafo, Nodo(8), 7)
 
-print('---')
+# print('---')
 
-grafo.NuevoNodoBusqueda(grafo, Nodo(8), 11)
-print('---')
+# grafo.NuevoNodoBusqueda(grafo, Nodo(8), 11)
+print('--')
 
-print(grafo.BuscarNodoDFS(grafo,8).valor)
+print(grafo.BuscarNodoDFSR(grafo,7)[::-1])
 
 import queue
 
