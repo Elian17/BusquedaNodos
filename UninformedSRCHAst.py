@@ -4,11 +4,13 @@ class Nodo:
     nodos = []
     costo=0
     suma=0
+    ruta = "-"
 
     def __init__(self, numero, costo):
         self.valor = numero
         self.nodos=[]
         self.costo = costo
+        self.ruta = "-"
 
     def NuevoNodo(self, nod):
         self.nodos.append(nod)
@@ -23,7 +25,6 @@ class Nodo:
 
     # BUSQUEDA POR PROFUNDIDAD
     def BuscarNodoDFS(self, nodo, busqueda):
-        print(nodo.valor)
         if nodo.valor==busqueda:
             return nodo
         else:
@@ -35,7 +36,6 @@ class Nodo:
 
     # BUSQUEDA POR AMPLITUD
     def BuscarNodoBFS(self, nodo, busqueda, cola):
-        print(nodo.valor)
         if nodo.valor==busqueda:
             return nodo
         else:
@@ -71,6 +71,22 @@ class Nodo:
             lista.sort(key=lambda l: l.costo)  
             return self.UninformedSearch(lista[0], busqueda, lista)
         return 0
+    
+    # Busqueda sin informacion con ruta
+    def UninformedSearchRuta(self, nodo, busqueda, lista):
+        if len(lista)>0:
+            lista.remove(lista[0])
+        if nodo.valor==busqueda:
+            nodo.ruta+="-"+str(nodo.valor)
+            return nodo
+        else:     
+            for n in nodo.nodos:
+                n.ruta += str(nodo.ruta)+"-"+str(nodo.valor)+"-"
+                n.costo+=nodo.costo
+                lista.append(n) 
+            lista.sort(key=lambda l: l.costo)  
+            return self.UninformedSearchRuta(lista[0], busqueda, lista)
+        return 0
 
 
 grafo = Nodo(1, 0)
@@ -82,8 +98,8 @@ grafo.NuevoNodoBusqueda(grafo, Nodo(6, 1), 2)
 grafo.NuevoNodoBusqueda(grafo, Nodo(8, 9), 6)
 grafo.NuevoNodoBusqueda(grafo, Nodo(7, 5), 6)
 grafo.NuevoNodoBusqueda(grafo, Nodo(8, 3), 3)
-print("x")
 # print(grafo.UninformedSearch(grafo, 8, 0))
 lista=[]
-grafo.UninformedSearch(grafo, 8, lista)
+print("Ruta sin informacion")
+print(grafo.UninformedSearchRuta(grafo, 8, lista).ruta)
 

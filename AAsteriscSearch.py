@@ -4,12 +4,14 @@ class Nodo:
     nodos = []
     distanciaInicio=0
     distanciaObjetivo=0
+    ruta = "-"
 
     def __init__(self, numero, distanciaInicio, distanciaObjetivo):
         self.valor = numero
         self.nodos=[]
         self.distanciaInicio = distanciaInicio
         self.distanciaObjetivo = distanciaObjetivo
+        self.ruta = "-"
 
     def NuevoNodo(self, nod):
         self.nodos.append(nod)
@@ -48,6 +50,22 @@ class Nodo:
             return self.AStartSearch(lista[0], busqueda, lista)
         return 0
 
+    # Busqueda con informacion retorna ruta
+    # SE DEBERIA HACER UN RECONOCIMIENTO INICIAL
+    def AStartSearchRuta(self, nodo, busqueda, lista):
+        if len(lista)>0:
+            lista.remove(lista[0])
+        if nodo.valor==busqueda:
+            nodo.ruta+="-"+str(nodo.valor)
+            return nodo
+        else:     
+            for n in nodo.nodos:
+                n.ruta += str(nodo.ruta)+"-"+str(nodo.valor)+"-"
+                lista.append(n) 
+            lista.sort(key=lambda l: (l.distanciaInicio+l.distanciaObjetivo))  
+            return self.AStartSearchRuta(lista[0], busqueda, lista)
+        return 0
+
 
 grafo = Nodo(1, 0, 40)
 grafo.NuevoNodo(Nodo(4, 21, 70))
@@ -60,8 +78,9 @@ grafo.NuevoNodoBusqueda(grafo, Nodo(5, 55, 35), 6)
 grafo.NuevoNodoBusqueda(grafo, Nodo(8, 296, 0), 6)
 grafo.NuevoNodoBusqueda(grafo, Nodo(9, 85, 8), 6)
 grafo.NuevoNodoBusqueda(grafo, Nodo(8, 90, 0), 9)
-print("x")
 # print(grafo.UninformedSearch(grafo, 8, 0))
 lista=[]
-grafo.AStartSearch(grafo, 8, lista)
+print("ruta con informacion")
+print(grafo.AStartSearchRuta(grafo, 8, lista).ruta)
+
 
